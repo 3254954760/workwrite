@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flex Demo</title>
+<style>
+  /* #inputFile{
+    width: 200px;
+    height: 100px;
+  } */
+  html, body {
+    height: 300%;  /* 设置一个足够大的值来使页面可以滚动 */
+    width: 300%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;  /* 允许页面滚动 */
+    position: relative;
+  }
+  .container{
+  height: 300px;
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  background-color: red;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- <input id="inputFile" type="file"> -->
+</div>
+
+</body>
+<!-- <script src="./index.js"></script> -->
+ <script>
+        const isInView_scroll = (el) => {
+          const documentScrollTop = document.documentElement.scrollTop;
+          const documentClientHeight = document.documentElement.clientHeight;
+          if (el.offsetTop > documentScrollTop + documentClientHeight) {
+              console.log('元素在可视区域下方');
+          } else if (el.offsetTop < documentScrollTop - el.offsetHeight) {
+              console.log('元素在可视区域上方',el.offsetTop,el.offsetHeight,documentScrollTop);
+          } else if(el.offsetLeft+el.offsetWidth< document.documentElement.scrollLeft){
+            console.log('元素在可视区域左边')
+          } else if(el.offsetLeft > document.documentElement.scrollLeft +document.documentElement.clientWidth){
+            console.log('元素在可视区域右边')
+          }
+          else {
+              console.log('在可视区域啦');
+          }
+        }
+        let dom = document.querySelector('.container')
+        const isInView_getBoundingClientRect = (el) => {
+          const clientHeight = document.documentElement.clientHeight;
+          const clientWidth = document.documentElement.clientWidth;
+          const { bottom, y, x, right } = el.getBoundingClientRect();
+          if (bottom < 0) {
+              console.log('元素在可视区域上方')
+          } else if (y > clientHeight) {
+              console.log('元素在可视区域下方')
+          } else if(right < 0){
+              console.log('元素在可视区域左方')
+          } else if(x >clientWidth){
+            console.log('元素在可视区域右方')
+          }else {
+              console.log('在可视区域啦')
+          }
+      }
+        document.addEventListener('scroll', () => {
+          // isInView_scroll(dom)
+          isInView_getBoundingClientRect(dom)
+        })
+        // 通过内置的IntersectionObserver来判断,
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        if (entries[0].intersectionRatio <= 0) {
+          console.log('视野之外')
+        } else {
+          console.log('视野之内');
+        }
+      },{
+        // root配置参数：表示父元素
+      })
+      intersectionObserver.observe(dom);
+ </script>
+</html>
