@@ -50,3 +50,46 @@ addTask(500, '2')
 addTask(300, '3')
 addTask(400, '4')
 addTask(600, '6')
+
+
+class ConcurrentExecutor {
+    constructor(maxConcurrent) {
+        this.maxConcurrent = maxConcurrent;
+        this.queue = [];
+        this.running = 0;
+    }
+    
+    addTask(task) {
+        this.queue.push(task);
+    }
+
+    run() {
+        if(this.queue.length > 0 && this.running <= this.maxConcurrent){
+            let task =  this.queue.shift();
+            this.running++;
+            task().then(res => {
+                this.running--;
+                this.run()
+            })
+            this.run()
+        }
+        return;
+    }
+}
+
+// 创建一个能够并发10个任务的执行器
+let executor = new ConcurrentExecutor(5);
+
+// 添加任务
+for (let i = 0; i < 100; i++) {
+    executor.addTask(() => new Promise(resolve => {
+        // 这里是你的异步任务
+        setTimeout(() => {
+            console.log(`Task ${i} finished`);
+            resolve();
+        }, Math.random() * 2000);
+    }));
+}
+
+// 运行
+executor.run();
