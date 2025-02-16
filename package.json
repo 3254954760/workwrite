@@ -7,7 +7,7 @@
         "build:dev": "cross-env NODE_ENV=development NODE_OPTIONS=\"--openssl-legacy-provider\" webpack --progress --config build/webpack.config.prod.js",
         "build:watch": "cross-env NODE_ENV=development NODE_OPTIONS=\"--openssl-legacy-provider\" webpack --progress --config build/webpack.config.prod.js --watch",
         "dev": "cross-env NODE_ENV=development NODE_OPTIONS=\"--openssl-legacy-provider\" webpack-dev-server --config build/webpack.config.dev.js",
-        "analyz": "cross-env NODE_ANALYZE=true npm run build",
+        "analyz": "cross-env NODE_ANALYZE=true npm run build"
     },
     "keywords": [
         "learn"
