@@ -90,6 +90,7 @@
         "crypto-js": "^4.2.0",
         "dayjs": "^1.10.7",
         "echarts": "^5.2.2",
+        "express": "^4.19.2",
         "echarts-for-react": "^3.0.2",
         "eventemitter3": "^4.0.7",
         "fetch-jsonp": "^1.2.1",
