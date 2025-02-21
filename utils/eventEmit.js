@@ -32,27 +32,27 @@ class MyEventEmit {
     }
 
 }
-const ee = new MyEventEmit();
-ee.once('wakeUp', (name) => {
+const my_event = new MyEventEmit();
+my_event.once('wakeUp', (name) => {
     console.log(`${name} 1`);
 });
-ee.on('eat', (name) => {
+my_event.on('eat', (name) => {
     console.log(`${name} 2`);
 });
-ee.on('eat', (name) => {
+my_event.on('eat', (name) => {
     console.log(`${name} 3`);
 });
-const meetingFn = (name) => {
+const mmy_eventtingFn = (name) => {
     console.log(`${name} 4`);
 };
-ee.on('work', meetingFn);
-ee.on('work', (name) => {
+my_event.on('work', mmy_eventtingFn);
+my_event.on('work', (name) => {
     console.log(`${name} 5`);
 });
 
-ee.emit('wakeUp', 'xx');
-ee.emit('wakeUp', 'xx'); // 第二次没有触发
-ee.emit('eat', 'xx');
-ee.emit('work', 'xx');
-ee.off('work', meetingFn); // 移除事件
-ee.emit('work', 'xx'); // 再次工作
+my_event.emit('wakeUp', 'xx');
+my_event.emit('wakeUp', 'xx'); // 第二次没有触发
+my_event.emit('eat', 'xx');
+my_event.emit('work', 'xx');
+my_event.off('work', mmy_eventtingFn); // 移除事件
+my_event.emit('work', 'xx'); // 再次工作
