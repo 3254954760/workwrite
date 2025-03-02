@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>视频播放演示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #video-container {
+            border: 1px solid #eee;
+            padding: 20px;
+            width: fit-content;
+        }
+
+        #canvas-1 {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="video-container">
+        <canvas id="canvas-1" width="500" height="300"></canvas>
+        <br />
+        <button id="play-button">播放</button>
+        <button id="pause-button">暂停</button>
+        <button id="resume-button">继续播放</button>
+        <button id="forward-button">快进 3 秒</button>
+        <button id="backward-button">后退 3 秒</button>
+        <button id="speed-1-5-button">1.5 倍速</button>
+        <button id="speed-2-button">2 倍速</button>
+        <br /><br />
+    </div>
+
+    <script>
+        class VideoPlayer {
+            constructor(canvasId, videoSrc) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.video = document.createElement('video');
+                this.videoSrc = videoSrc;
+                this.animationFrameId = null;
+                this.pausedTime = 0;
+                this.init();
+            }
+
+            drawTip(text) {
+                this.canvas.width = this.canvas.width;
+                this.canvas.height = this.canvas.height;
+                this.ctx.font = '24px Microsoft YaHei';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline ='middle';
+                this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2);
+            }
+
+            init() {
+                this.drawTip('正在缓冲中....');
+                this.video.src = this.videoSrc;
+                this.video.oncanplay = () => {
+                    this.drawTip('加载完毕，开始播放');
+                };
+                this.video.onerror = () => {
+                    this.drawTip('视频加载失败，请检查网络或视频链接');
+                };
+            }
+
+            play() {
+                if (this.pausedTime > 0) {
+                    this.video.currentTime = this.pausedTime;
+                }
+                this.video.play().catch(error => {
+                    console.error('播放视频时出错:', error);
+                    this.drawTip('播放视频时出错，请检查浏览器设置或网络');
+                });
+                const drawFrame = () => {
+                    if (this.video.currentTime >= this.video.duration) {
+                        this.stop();
+                        return;
+                    }
+                    this.ctx.drawImage(
+                        this.video,
+                        (this.canvas.width - this.video.videoWidth) / 2,
+                        (this.canvas.height - this.video.videoHeight) / 2,
+                        this.video.videoWidth,
+                        this.video.videoHeight
+                    );
+                    this.animationFrameId = requestAnimationFrame(drawFrame);
+                };
+                this.animationFrameId = requestAnimationFrame(drawFrame);
+            }
+
+            pause() {
+                if (this.animationFrameId) {
+                    cancelAnimationFrame(this.animationFrameId);
+                }
+                this.pausedTime = this.video.currentTime;
+                this.video.pause();
+            }
+
+            stop() {
+                if (this.animationFrameId) {
+                    cancelAnimationFrame(this.animationFrameId);
+                }
+                this.video.pause();
+                this.pausedTime = 0;
+            }
+
+            forward() {
+                if (this.video.currentTime + 3 <= this.video.duration) {
+                    this.video.currentTime += 3;
+                } else {
+                    this.video.currentTime = this.video.duration;
+                }
+            }
+
+            backward() {
+                if (this.video.currentTime - 3 >= 0) {
+                    this.video.currentTime -= 3;
+                } else {
+                    this.video.currentTime = 0;
+                }
+            }
+
+            setSpeed(speed) {
+                this.video.playbackRate = speed;
+            }
+        }
+
+        const player = new VideoPlayer('canvas-1', 'https://www.twle.cn/static/i/html/html_video_2.mp4');
+        player.drawTip('你可以点击播放按钮播放视频....');
+
+        const playButton = document.getElementById('play-button');
+        const pauseButton = document.getElementById('pause-button');
+        const resumeButton = document.getElementById('resume-button');
+        const forwardButton = document.getElementById('forward-button');
+        const backwardButton = document.getElementById('backward-button');
+        const speed15Button = document.getElementById('speed-1-5-button');
+        const speed2Button = document.getElementById('speed-2-button');
+
+        playButton.addEventListener('click', () => {
+            player.play();
+        });
+
+        pauseButton.addEventListener('click', () => {
+            player.pause();
+        });
+
+        resumeButton.addEventListener('click', () => {
+            player.play();
+        });
+
+        forwardButton.addEventListener('click', () => {
+            player.forward();
+        });
+
+        backwardButton.addEventListener('click', () => {
+            player.backward();
+        });
+
+        speed15Button.addEventListener('click', () => {
+            player.setSpeed(1.5);
+        });
+
+        speed2Button.addEventListener('click', () => {
+            player.setSpeed(2);
+        });
+    </script>
+</body>
+
+</html>
