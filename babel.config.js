@@ -24,6 +24,7 @@ module.exports = {
             {
                 'absoluteRuntime': false,
                 'regenerator': true,
+                // eslint-disable-next-line max-len
                 // 'corejs': 3, // 如果是业务项目开发者：@babel/plugin-transform-runtime ，建议关闭 corejs，polyfill 的引入由 @babel/preset-env 完成，即开启 useBuiltIns
                 // 原因：https://mp.weixin.qq.com/s/sJMydobsSxzxj2SECwcr_A
                 'corejs': false,
@@ -47,8 +48,7 @@ module.exports = {
                 'style': false
             },
             'antd-mobile'
-        ],
-
+        ]
     ],
     sourceType: 'unambiguous'
 };
