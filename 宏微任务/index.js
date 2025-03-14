@@ -45,3 +45,36 @@ new Promise((resolve) => {
     console.log(11);
 })
 // 1 2  10 5  11 6  9  8
+
+
+
+
+console.log('start');
+setTimeout(() => {
+ console.log('setTimeout');
+});
+
+requestAnimationFrame(() => {
+ console.log('requestAnimationFrame');
+});
+
+var p = new Promise(resolve => {
+ console.log('promise');
+ resolve();
+})
+ .then(() => {
+   console.log('then1');
+   return new Promise()
+ })
+ .then(() => {
+   console.log('then2');
+ });
+
+async function a() {
+ console.log('async1');
+ await p;
+ console.log('async2');
+}
+a();
+
+console.log('end');
