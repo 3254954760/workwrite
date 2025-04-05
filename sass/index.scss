@@ -1,0 +1,48 @@
+// 修正函数名拼写错误，去掉多余空格和 unquote 函数
+@function getShadows($n) {
+    $shadows: #{random(100)}vw #{random(100)}vh #FFF;
+    @for $i from 2 through $n {
+        $shadows: #{$shadows},#{random(100)}vw
+        #{random(100)}vh #FFF;
+    }
+    @return $shadows;
+}
+
+body {
+    background-color: black;
+}
+
+$duration: 400s;
+$count: 1000;
+
+@for $i from 1 through 5 {
+    $duration: $duration / 2;
+    $count: floor($count / 2);
+    .layer#{$i} {
+        $size: #{$i}px;
+        position: fixed;
+        border-radius: 50%;
+        height: $size;
+        width: $size;
+        left: 0;
+        top: 0;
+        box-shadow: getShadows($count);
+        animation: moveUp $duration linear infinite;
+        &::after {
+            content: '';
+            position: fixed;
+            left: 0;
+            top: 100vh;
+            border-radius: inherit;
+            width: inherit;
+            height: inherit;
+            box-shadow: inherit;
+        }
+    }
+}
+
+@keyframes moveUp {
+    to {
+        transform: translateY(-100vh);
+    }
+}
