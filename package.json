@@ -132,6 +132,7 @@
         "sortablejs": "^1.14.0",
         "swiper": "^6.8.4",
         "timeago.js": "^4.0.2",
+        "typescript": "^5.8.2",
         "whatwg-fetch": "^3.5.0"
     },
     "license": "UNLICENSED"
